@@ -8,18 +8,18 @@ const {
 
 const seed = ({ usersData, postsData, favouritesData }) => {
     return db
-      .query(`DROP TABLE IF EXISTS users;`)
+      .query(`DROP TABLE IF EXISTS favourites;`)
       .then(() => {
         return db.query(`DROP TABLE IF EXISTS posts;`);
       })
       .then(() => {
-        return db.query(`DROP TABLE IF EXISTS favourites;`);
+        return db.query(`DROP TABLE IF EXISTS users;`);
       })
       .then(() => {         
         return db.query(`
         CREATE TABLE users (
-          username VARCHAR(255) PRIMARY KEY,
-          name VARCHAR(255) NOT NULL,
+          username VARCHAR PRIMARY KEY,
+          name VARCHAR NOT NULL,
           profile_img VARCHAR,
           points INT DEFAULT 0 NOT NULL
         );`)
@@ -28,9 +28,9 @@ const seed = ({ usersData, postsData, favouritesData }) => {
         return db.query(`
         CREATE TABLE posts (
           post_id SERIAL PRIMARY KEY,
-          username VARCHAR(255) NOT NULL REFERENCES users(username),
-          post_img VARCHAR(255),
-          description VARCHAR(300) NOT NULL,
+          username VARCHAR NOT NULL REFERENCES users(username),
+          post_img VARCHAR,
+          description VARCHAR NOT NULL,
           created_at TIMESTAMP DEFAULT NOW(),
           location POINT NOT NULL
         );`);
@@ -38,9 +38,9 @@ const seed = ({ usersData, postsData, favouritesData }) => {
       .then(() => {
         return db.query(`
         CREATE TABLE favourites (
-          username VARCHAR(255) NOT NULL REFERENCES users(username),
+          username VARCHAR NOT NULL REFERENCES users(username),
           post_id INT NOT NULL REFERENCES posts(post_id),
-          PRIMARY KEY (username, post_id),
+          PRIMARY KEY (username, post_id)
         );`);
       })
       .then(() => {

@@ -1,8 +1,8 @@
 module.exports = [
     { 
-    username: "nature-lover", 
+    username: "nature_lover", 
     post_id: 1 },
     { 
-    username: "nature-lover", 
+    username: "nature_lover", 
     post_id: 2 }
 ]

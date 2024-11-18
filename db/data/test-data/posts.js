@@ -1,6 +1,6 @@
 module.exports = [
     {
-      username: "nature-lover",
+      username: "nature_lover",
       post_img: "https://media.gettyimages.com/id/993489488/photo/peregrine-falcon-adult-female-warming-its-chicks-city-church-esslingen-baden-wuerttemberg.jpg?s=612x612&w=gi&k=20&c=FXlV3zDkpidzWObT8njwXc3AfexCEa3n8_mS89a-QaY=",
       description: "Check this amazing Peregrine falcons' nest.",
       created_at: "2024-11-15T10:30:00Z",
