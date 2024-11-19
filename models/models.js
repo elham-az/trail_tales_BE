@@ -54,3 +54,14 @@ exports.fetchPostById = (post_id) => {
         return rows[0];
     })
 }
+
+exports.addPost = ({ username, post_img, description, location }) => {
+    return db.query(`
+        INSERT INTO posts (username, post_img, description, created_at, location)
+        VALUES ($1, $2, $3, NOW(), $4)
+        RETURNING *;`,
+         [username, post_img, description, location])
+        .then(({ rows }) => {
+            return rows[0]
+    })
+}

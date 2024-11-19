@@ -1,4 +1,4 @@
-const {fetchUsersByUsername, fetchPosts, fetchPostById} = require('../models/models')
+const {fetchUsersByUsername, fetchPosts, fetchPostById, addPost} = require('../models/models')
 
 exports.getUsersByUsername = (request, response, next) => {
     const { username } = request.params;
@@ -27,4 +27,22 @@ exports.getPostById = (request, response, next) => {
         response.status(200).send({post})
     })
     .catch(next)
+}
+
+exports.postNewPost = (request, response, next) => {
+    const { username, post_img, description, location } = request.body;
+    if (!username || !post_img || !description || !location) {
+        return response.status(400).send({ msg: "Missing required fields" });
+    }
+    const newPost = {
+        username,
+        post_img,
+        description,
+        location,
+    };
+    addPost(newPost)
+        .then((addedPost) => {
+            response.status(201).send({ post: addedPost })
+        })
+        .catch(next);
 }
