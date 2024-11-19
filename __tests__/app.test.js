@@ -47,6 +47,7 @@ describe("GET - /api/posts", () => {
         .get("/api/posts")
         .expect(200)
         .then(({ body }) => {
+            console.log(body.posts[0].location)
             expect(Array.isArray(body.posts)).toBe(true);
             expect(body.posts.length).not.toBe(0);
             body.posts.forEach(post => {

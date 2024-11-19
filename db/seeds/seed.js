@@ -32,8 +32,15 @@ const seed = ({ usersData, postsData, favouritesData }) => {
           post_img VARCHAR,
           description VARCHAR NOT NULL,
           created_at TIMESTAMP DEFAULT NOW(),
-          location POINT NOT NULL
+          location geography(POINT) NOT NULL
         );`);
+      })
+      .then(() => {
+        return db.query(
+          `CREATE INDEX posts_geo_index
+          ON posts
+          USING GIST (location);`
+        )
       })
       .then(() => {
         return db.query(`
