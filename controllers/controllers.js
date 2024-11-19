@@ -1,4 +1,4 @@
-const {fetchUsersByUsername, fetchPosts} = require('../models/models')
+const {fetchUsersByUsername, fetchPosts, fetchPostById} = require('../models/models')
 
 exports.getUsersByUsername = (request, response, next) => {
     const { username } = request.params;
@@ -16,6 +16,15 @@ exports.getPosts = (request, response, next) => {
     fetchPosts(sort_by, order)
     .then((posts) => {
         response.status(200).send({ posts })
+    })
+    .catch(next)
+}
+
+exports.getPostById = (request, response, next) => {
+    const {post_id} = request.params
+    fetchPostById(post_id)
+    .then((post) => {
+        response.status(200).send({post})
     })
     .catch(next)
 }

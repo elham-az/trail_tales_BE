@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const { getUsersByUsername, getPosts } = require(`./controllers/controllers`)
+const { getUsersByUsername, getPosts, getPostById } = require(`./controllers/controllers`)
 const endpoints = require('./endpoints.json')
 const { psqlErrorHandlerOne, psqlErrorHandlerTwo, psqlErrorHandlerThree, customErrorHandler, serverErrorHandler } = require('./error-handlers');
 
@@ -13,6 +13,8 @@ app.get('/api', (request, response) => {
 app.get('/api/users/:username', getUsersByUsername)
 
 app.get('/api/posts', getPosts)
+
+app.get('/api/posts/:post_id', getPostById)
 
 app.all("*", (request, response, next) => {
     response.status(404).send({msg: 'Path not found'})

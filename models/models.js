@@ -39,3 +39,18 @@ exports.fetchPosts = (sort_by = 'created_at', order = 'desc') => {
         return rows;
     })
 }
+
+exports.fetchPostById = (post_id) => {
+    return db.query(
+        `SELECT *
+        FROM posts
+        WHERE post_id = $1`,
+        [post_id]
+    )
+    .then(({rows}) => {
+        if(rows.length === 0) {
+            return Promise.reject({status: 404, msg: 'No post found' })
+        }
+        return rows[0];
+    })
+}

@@ -90,5 +90,37 @@ describe("GET - /api/posts", () => {
                 expect(body).toEqual({ msg: 'Query must be sort_by'})
             })
         })
+    })  
+})
+
+describe("GET - /api/posts/:post_id", () => {
+    it("GET:200 - responds with a post object containing correct properties", () => {
+        return request(app)
+        .get("/api/posts/1")
+        .expect(200)
+        .then(({ body }) => {
+            expect(body.post).toHaveProperty('post_id', 1);
+            expect(body.post).toHaveProperty('post_img', expect.any(String));
+            expect(body.post).toHaveProperty('description', expect.any(String));
+            expect(body.post).toHaveProperty('created_at', expect.any(String));
+            expect(body.post).toHaveProperty('location', expect.any(Object));
+       })
+    })
+    describe("Error handling", () => {
+    it("GET:404 - returns an error for a non-existent post", () => {
+        return request(app)
+        .get("/api/posts/999")
+        .expect(404)
+        .then(({ body }) => {
+            expect(body.msg).toBe('No post found')
+        })
+    })
+    it("GET:400 - returns an error for an invalid ID", () => {
+        return request(app)
+        .get("/api/posts/abcdefg")
+        .expect(({ body }) => {
+            expect(body.msg).toBe('Invalid type')
+        })
+    })
     })
 })
