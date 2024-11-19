@@ -3,6 +3,9 @@ const app = express()
 const { getUsersByUsername, getPosts, getPostById, postNewPost } = require(`./controllers/controllers`)
 const endpoints = require('./endpoints.json')
 const { psqlErrorHandlerOne, psqlErrorHandlerTwo, psqlErrorHandlerThree, customErrorHandler, serverErrorHandler } = require('./error-handlers');
+const cors = require('cors')
+
+app.use(cors())
 
 app.use(express.json())
 
