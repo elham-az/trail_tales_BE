@@ -15,30 +15,35 @@ exports.fetchUsersByUsername = (username) => {
     })
 }
 
-exports.fetchPosts = (sort_by = 'created_at', order = 'desc') => {
-    const validSortBys = ['created_at']
-    const validOrders = ['desc', 'asc']
+exports.fetchPosts = (longitude, latitude, sort_by = 'created_at', order = 'desc') => {
+    const validSortBys = ['created_at'];
+    const validOrders = ['desc', 'asc'];
 
     if(!validSortBys.includes(sort_by)) {
-        return Promise.reject({status: 400, msg: 'Query must be sort_by'})
+        return Promise.reject({status: 400, msg: 'Invalid sort_by query'});
     }
-
     if(!validOrders.includes(order)) {
-        return Promise.reject({status: 400, msg: 'Invalid order query, must be either desc or asc'})
+        return Promise.reject({status: 400, msg: 'Invalid order query, must be either desc or asc'});
     }
 
-    const query = `SELECT * 
-    FROM posts
-    ORDER BY ${sort_by} ${order.toUpperCase()};` 
+    const query = (`
+        SELECT *
+        FROM posts
+        WHERE ST_DWithin(
+            location, 
+            ST_SetSRID(ST_MakePoint($1, $2), 4326), -- User's lat, lon converted to geometry
+            10000 -- 10 km distance in meters
+        )
+        ORDER BY ${sort_by} ${order};`)
 
-    return db.query(query)
-    .then(({ rows }) => {
-        if(rows.length === 0) {
-            return Promise.reject({status: 404, msg: 'No post found' })
-        }
-        return rows;
-    })
-}
+    return db.query(query, [longitude, latitude])
+        .then(({ rows }) => {
+            if (rows.length === 0) {
+                return Promise.reject({ status: 404, msg: 'No posts found within 10 km' });
+            }
+            return rows;
+        });
+};
 
 exports.fetchPostById = (post_id) => {
     return db.query(

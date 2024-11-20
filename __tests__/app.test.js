@@ -8,7 +8,21 @@ require('jest-sorted');
 
 beforeEach(() => seed(data));
 
-afterAll(() => db.end());
+// beforeEach(() => {
+//     return db.query('SELECT PostGIS_Full_Version();').then(({ rows }) => {console.log(rows)
+//         return seed(data)
+//     });
+// });
+
+// afterEach(() => {
+//     return db.query('SELECT PostGIS_Full_Version();').then(({ rows }) => console.log(rows));
+// });
+
+afterEach(() => {
+    return db.query('SELECT * FROM posts;').then(({ rows }) => console.log(rows));
+});
+
+afterAll(() => {return db.end()});
 
 describe('app', () => {
     it('when invalid endpoint, give 404', () => {
@@ -44,7 +58,7 @@ describe("Error handling", () => {
 describe("GET - /api/posts", () => {
     it("GET:200 - responds with an array of posts with the correct properties", () => {
         return request(app)
-        .get("/api/posts")
+        .get("/api/posts?longitude=-73.94581&latitude=40.807475")
         .expect(200)
         .then(({ body }) => {
             expect(Array.isArray(body.posts)).toBe(true);
@@ -54,13 +68,13 @@ describe("GET - /api/posts", () => {
                 expect(post).toHaveProperty('post_img', expect.any(String));
                 expect(post).toHaveProperty('description', expect.any(String));
                 expect(post).toHaveProperty('created_at', expect.any(String));
-                expect(post).toHaveProperty('location', expect.any(Object));
+                expect(post).toHaveProperty('location', expect.any(String));
             })
         })
     })
     it("GET:200 - responds with posts sorted by created_at in descending order", () => {
         return request(app)
-        .get("/api/posts")
+        .get("/api/posts?longitude=-73.94581&latitude=40.807475")
         .expect(200)
         .then(({ body }) => {
             expect(body.posts).toBeSortedBy('created_at', { descending: true });
@@ -68,7 +82,7 @@ describe("GET - /api/posts", () => {
     })
     it("GET:200 - responds with posts sorted by created_at in ascending order", () => {
         return request(app)
-        .get("/api/posts?sort_by=created_at&order=asc")
+        .get("/api/posts?sort_by=created_at&order=asc&longitude=-73.94581&latitude=40.807475")
         .expect(200)
         .then(({ body }) => {
             expect(body.posts).toBeSortedBy('created_at', { ascending: true });
@@ -77,7 +91,7 @@ describe("GET - /api/posts", () => {
     describe("Error handling", () => {
         it("GET:400 - returns an error when order is invalid", () => {
             return request(app)
-            .get("/api/posts?sort_by=created_at&order=invalid_order")
+            .get("/api/posts?sort_by=created_at&order=invalid_order&longitude=-73.94581&latitude=40.807475")
             .expect(400)
             .then(({ body }) => {
                 expect(body).toEqual({ msg: 'Invalid order query, must be either desc or asc' })
@@ -85,9 +99,9 @@ describe("GET - /api/posts", () => {
         })
         it("GET:400 - returns an error when sort_by is invalid", () => {
             return request(app)
-            .get("/api/posts?sort_by=invalid_column")
+            .get("/api/posts?sort_by=invalid_column&longitude=-73.94581&latitude=40.807475")
             .expect(({ body }) => {
-                expect(body).toEqual({ msg: 'Query must be sort_by'})
+                expect(body).toEqual({ msg: 'Invalid sort_by query'})
             })
         })
     })  
@@ -103,7 +117,7 @@ describe("GET - /api/posts/:post_id", () => {
             expect(body.post).toHaveProperty('post_img', expect.any(String));
             expect(body.post).toHaveProperty('description', expect.any(String));
             expect(body.post).toHaveProperty('created_at', expect.any(String));
-            expect(body.post).toHaveProperty('location', expect.any(Object));
+            expect(body.post).toHaveProperty('location', expect.any(String));
        })
     })
     describe("Error handling", () => {
@@ -130,7 +144,7 @@ describe("POST - /api/post", () => {
         username: "nature_lover",
         post_img: "https://media.gettyimages.com/id/993489488/photo/peregrine-falcon-adult-female-warming-its-chicks-city-church-esslingen-baden-wuerttemberg.jpg?s=612x612&w=gi&k=20&c=FXlV3zDkpidzWObT8njwXc3AfexCEa3n8_mS89a-QaY=",
         description: "Check this new amazing Peregrine falcons' nest.",
-        location: "(53.455645, 0.188402)"
+        location: "POINT(-73.94579 40.807472)"
         }
         return request(app)
         .post("/api/post")
@@ -141,7 +155,7 @@ describe("POST - /api/post", () => {
                 username: expect.any(String),
                 post_img: expect.any(String),
                 description: expect.any(String),
-                location: expect.any(Object),
+                location: expect.any(String),
                 created_at: expect.any(String),
                 }))
             })
@@ -165,7 +179,7 @@ describe("POST - /api/post", () => {
             username: "rand-user",
             post_img: "https://media.gettyimages.com/id/993489488/photo/peregrine-falcon-adult-female-warming-its-chicks-city-church-esslingen-baden-wuerttemberg.jpg?s=612x612&w=gi&k=20&c=FXlV3zDkpidzWObT8njwXc3AfexCEa3n8_mS89a-QaY=",
             description: "Check this new amazing Peregrine falcons' nest.",
-            location: "(53.455645, 0.188402)"
+            location: "POINT(-73.94579 40.807472)"
         }
             return request(app)
             .post("/api/post")
