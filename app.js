@@ -10,7 +10,7 @@ app.use(cors())
 app.use(express.json())
 
 app.get('/api', (request, response) => {
-    response.status(200).send({endpoints})
+    response.status(200).send(endpoints)
   })
 
 app.get('/api/users', getUsers)

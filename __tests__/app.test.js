@@ -31,7 +31,18 @@ describe('app', () => {
     })
 })
 
-describe("GET - /api/users", () => {
+describe("GET - /api", () => {
+    it("GET:200 - responds with endpoints object", () => {
+        return request(app)
+        .get("/api")
+        .expect(200)
+        .then(({ body }) => {
+            expect(body).toEqual(endpoints)
+        })
+    })
+})
+
+describe.only("GET - /api/users", () => {
     it("GET:200 - responds with an array of users", () => {
         return request(app)
         .get("/api/users")
@@ -52,6 +63,7 @@ describe("GET - /api/users", () => {
         .get("/api/users")
         .expect(200)
         .then(({ body }) => {
+            console.log(body)
             expect(body).toBeSortedBy('points', { descending: true });
         })
     })
@@ -182,6 +194,7 @@ describe("GET - /api/posts/:post_id", () => {
     })
     })
 })
+
 describe("POST - /api/post", () => {
     it("POST:201 - adds a new post and returns it", () => {
         const newPost = {
