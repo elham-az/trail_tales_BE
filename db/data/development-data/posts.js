@@ -52,8 +52,8 @@ module.exports = [
       post_img: "https://www.lincstrust.org.uk/sites/default/files/styles/scaled_default/public/2019-01/DonnaNook_Ruth%20Taylor_1.JPG?itok=AALwfbLf",
       description: "Spotted a playful family of otters on my kayak trip.",
       created_at: "2024-11-12T09:20:00Z",
-      location: "POINT(53,89874 -1.69236)",
-      location_coord: "(53,89874, -1.69236)"
+      location: "POINT(53.89874 -1.69236)",
+      location_coord: "(53.89874, -1.69236)"
     }
   ]
 

@@ -45,6 +45,5 @@ module.exports =[
     name: 'Jess',
     profile_img: 'https://images.pexels.com/photos/27054224/pexels-photo-27054224/free-photo-of-motorbike-parked-on-hill-on-sea-coast.jpeg?auto=compress&cs=tinysrgb&w=800&lazy=load',
     points: 8
-    },
-    
+    }
 ]
