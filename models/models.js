@@ -1,7 +1,17 @@
 const db = require('../db/connection')
 
-exports.fetchUsers = () => {
-    return db.query(`SELECT * FROM users`)
+exports.fetchUsers = (sort_by = 'points', order = 'desc') => {
+    const validSortBys = ['points'];
+    const validOrders = ['desc', 'asc'];
+
+    if(!validSortBys.includes(sort_by)) {
+        return Promise.reject({status: 400, msg: 'Invalid sort_by query'});
+    }
+    if(!validOrders.includes(order)) {
+        return Promise.reject({status: 400, msg: 'Invalid order query, must be either desc or asc'});
+    }
+    
+    return db.query(`SELECT * FROM users ORDER BY ${sort_by} ${order};`)
     .then(({ rows }) => {
         return rows;
     })

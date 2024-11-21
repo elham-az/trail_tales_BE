@@ -4,7 +4,9 @@
     },
   "GET /api/users": {
   "description": "serves an array of all users",
-  "queries": [],
+  "queries": ["sort_by", "order"],
+  "validSortBys": ["points"],
+  "validOrders": ["asc", "desc"],
   "exampleResponse": {
     "users": [
       {

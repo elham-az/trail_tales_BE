@@ -1,7 +1,8 @@
 const {fetchUsers, fetchUsersByUsername, fetchPosts, fetchPostById, addPost} = require('../models/models')
 
 exports.getUsers = (request, response, next) => {
-    fetchUsers()
+    const { sort_by, order } = request.query;
+    fetchUsers(sort_by, order)
     .then((users) => {
         response.status(200).send(users)
     })

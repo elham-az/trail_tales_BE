@@ -47,6 +47,22 @@ describe("GET - /api/users", () => {
             })
         })
     })
+    it("GET:200 - responds with users sorted by points in descending order", () => {
+        return request(app)
+        .get("/api/users")
+        .expect(200)
+        .then(({ body }) => {
+            expect(body).toBeSortedBy('points', { descending: true });
+        })
+    })
+    it("GET:200 - responds with users sorted by points in ascending order", () => {
+        return request(app)
+        .get("/api/users?sort_by=points&order=asc")
+        .expect(200)
+        .then(({ body }) => {
+            expect(body).toBeSortedBy('points', { ascending: true });
+        })
+    })
 })
 
 describe("GET - /api/users/:username", () => {
