@@ -1,4 +1,4 @@
-const {fetchUsers, fetchUsersByUsername, fetchPostsByMap, fetchAllPosts, fetchPostById, addPost, fetchUserFavourites, addUserFavourites} = require('../models/models')
+const {fetchUsers, fetchUsersByUsername, fetchPostsByMap, fetchAllPosts, fetchPostById, addPost, fetchUserFavourites, addUserFavourites, updateUser} = require('../models/models')
 
 exports.getUsers = (request, response, next) => {
     const { sort_by, order } = request.query;
@@ -139,4 +139,7 @@ exports.postUserFavourites = (request, response, next) => {
     next(error)
     })
 }
-    
+
+exports.patchUser = () => {
+    updateUser()
+}

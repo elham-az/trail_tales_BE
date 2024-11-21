@@ -137,4 +137,8 @@ exports.addUserFavourites = ({ username, post_id }) => {
         return rows[0];
     })
 }
+
+exports.updateUser = (name, profile_img, points) => {
+    return db.query(`UPDATE users SET (name, profile_img, points) WHERE `)
+}
     

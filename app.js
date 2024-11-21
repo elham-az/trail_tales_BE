@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const { getUsers, getUsersByUsername, getPostsByMap, getPostById, postNewPost, getUserFavourites, postUserFavourites, getAllPosts } = require(`./controllers/controllers`)
+const { getUsers, getUsersByUsername, getPostsByMap, getPostById, postNewPost, getUserFavourites, postUserFavourites, getAllPosts, patchUser } = require(`./controllers/controllers`)
 const endpoints = require('./endpoints.json')
 const { psqlErrorHandlerOne, psqlErrorHandlerTwo, psqlErrorHandlerThree, customErrorHandler, serverErrorHandler } = require('./error-handlers');
 const cors = require('cors')
@@ -28,6 +28,8 @@ app.post('/api/post', postNewPost)
 app.get('/api/users/:username/favourites',getUserFavourites)
 
 app.post('/api/favourites', postUserFavourites)
+
+app.patch('/api/users/:username', patchUser)
 
 app.all("*", (request, response, next) => {
     response.status(404).send({msg: 'Path not found'})
