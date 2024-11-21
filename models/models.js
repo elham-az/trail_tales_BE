@@ -60,13 +60,13 @@ exports.fetchPostById = (post_id) => {
     })
 }
 
-exports.addPost = ({ username, post_img, description, location }) => {
+exports.addPost = ({ username, post_img, description, location, location_coord }) => {
     return db.query(`
-        INSERT INTO posts (username, post_img, description, created_at, location)
-        VALUES ($1, $2, $3, NOW(), $4)
+        INSERT INTO posts (username, post_img, description, created_at, location, location_coord)
+        VALUES ($1, $2, $3, NOW(), ST_GeomFromText($4, 4326), $5)
         RETURNING *;`,
-         [username, post_img, description, location])
+         [username, post_img, description, location, location_coord])
         .then(({ rows }) => {
-            return rows[0]
-    })
-}
+            return rows[0];
+    });
+};

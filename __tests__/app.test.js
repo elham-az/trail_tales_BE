@@ -18,11 +18,14 @@ beforeEach(() => seed(data));
 //     return db.query('SELECT PostGIS_Full_Version();').then(({ rows }) => console.log(rows));
 // });
 
-afterEach(() => {
-    return db.query('SELECT * FROM posts;').then(({ rows }) => console.log(rows));
-});
+// afterEach(() => {
+//     return db.query('SELECT * FROM posts;').then(({ rows }) => console.log());
+// });
 
-afterAll(() => {return db.end()});
+// afterAll(() => {return db.end()});
+
+beforeEach(() => seed(data));
+afterAll(() => db.end());
 
 describe('app', () => {
     it('when invalid endpoint, give 404', () => {
@@ -144,19 +147,25 @@ describe("POST - /api/post", () => {
         username: "nature_lover",
         post_img: "https://media.gettyimages.com/id/993489488/photo/peregrine-falcon-adult-female-warming-its-chicks-city-church-esslingen-baden-wuerttemberg.jpg?s=612x612&w=gi&k=20&c=FXlV3zDkpidzWObT8njwXc3AfexCEa3n8_mS89a-QaY=",
         description: "Check this new amazing Peregrine falcons' nest.",
-        location: "POINT(-73.94579 40.807472)"
+        location: "POINT(-73.94579 40.807472)",
+        location_coord: "(-73.94579, 40.807472)"
         }
         return request(app)
-        .post("/api/post")
+        .post("/api/post?longitude=-73.94579&latitude=40.807472")
         .send(newPost)
         .expect(201)
         .then(({ body }) => {
             expect(body.post).toEqual(expect.objectContaining({
+                post_id: expect.any(Number),
                 username: expect.any(String),
                 post_img: expect.any(String),
                 description: expect.any(String),
                 location: expect.any(String),
                 created_at: expect.any(String),
+                location_coord: expect.objectContaining({
+                    x: expect.any(Number),
+                    y: expect.any(Number),
+                }),
                 }))
             })
         })
@@ -179,10 +188,11 @@ describe("POST - /api/post", () => {
             username: "rand-user",
             post_img: "https://media.gettyimages.com/id/993489488/photo/peregrine-falcon-adult-female-warming-its-chicks-city-church-esslingen-baden-wuerttemberg.jpg?s=612x612&w=gi&k=20&c=FXlV3zDkpidzWObT8njwXc3AfexCEa3n8_mS89a-QaY=",
             description: "Check this new amazing Peregrine falcons' nest.",
-            location: "POINT(-73.94579 40.807472)"
+            location: "POINT(-73.94579 40.807472)", 
+            location_coord: "(-73.94579, 40.807472)"            
         }
             return request(app)
-            .post("/api/post")
+            .post("/api/post?longitude=-73.94579&latitude=40.807472")
             .send(newPost)
             .expect(404)
             .then(({ body }) => {
