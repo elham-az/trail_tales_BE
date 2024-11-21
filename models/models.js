@@ -102,7 +102,16 @@ exports.fetchUserFavourites = (username) => {
         }
         return rows;
     })
-    .catch(error => {
-        throw error
+}
+
+exports.addUserFavourites = ({ username, post_id }) => {
+    return db.query(
+    `INSERT INTO favourites (username, post_id)
+    VALUES ($1, $2)
+    RETURNING *`, [username, post_id]
+    )
+    .then(({ rows }) => {
+        return rows[0];
     })
 }
+    

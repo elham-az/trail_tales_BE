@@ -1,4 +1,4 @@
-const {fetchUsers, fetchUsersByUsername, fetchPosts, fetchPostById, addPost, fetchUserFavourites} = require('../models/models')
+const {fetchUsers, fetchUsersByUsername, fetchPosts, fetchPostById, addPost, fetchUserFavourites, addUserFavourites} = require('../models/models')
 
 exports.getUsers = (request, response, next) => {
     const { sort_by, order } = request.query;
@@ -109,3 +109,25 @@ exports.getUserFavourites = (request, response, next) => {
 //         next(error)
 //     })
 // }
+
+exports.postUserFavourites = (request, response, next) => {
+    const { username, post_id } = request.body;
+
+    if (!username || !post_id) {
+        return response.status(400).send({ msg: "Missing required fields" });
+    }
+    
+    const newFavourite = {
+        username,
+        post_id
+    }
+
+    addUserFavourites(newFavourite)
+    .then((favouriteData) => {
+        response.status(201).send({ favouriteData })
+    })
+    .catch((error) => {
+    next(error)
+    })
+}
+    

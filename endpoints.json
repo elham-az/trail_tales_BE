@@ -62,6 +62,28 @@
     }
     }
   },
+  "POST /api/post": {
+  "description": "Adds a new post. Request body accepts an object with 'username', 'post_img', 'description', location'. Responds with the created post.",
+  "queries": [],
+  "requestBody": {
+    "username": "string required",
+    "post_img": "string",
+    "description": "string required",
+    "location": "string required",
+    "location_coord": "string optional required"
+  },
+  "exampleResponse": {
+    "post": {
+      "post_id": 5,
+      "username": "nature_lover",
+      "post_img": "img",
+      "description": "Dogs and cats are cool.",
+      "created_at": "2020-04-07T12:10:20.000Z",
+      "location": "POINT(-73.94581 40.807475)",
+      "location_coord": "(-73.945826, 40.80629)"
+    }
+  }
+},
   "GET /api/users/:username/favourites": {
   "description": "returns a user object of user's favourites",
   "queries": [],
@@ -86,5 +108,19 @@
         "location_coord": "{x:-73.945826, y:40.80629)}"
       }]
     }
+  },
+  "POST /api/favourites": {
+  "description": "Adds favourite",
+  "queries": [],
+  "requestBody": {
+    "username": "string required",
+    "post_id": "number required"
+  },
+  "exampleResponse": {
+    "favourites": {
+      "username": "nature_lover",
+      "post_id": 5
+    }
   }
+}
 }

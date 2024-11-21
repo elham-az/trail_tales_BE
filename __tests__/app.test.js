@@ -42,7 +42,7 @@ describe("GET - /api", () => {
     })
 })
 
-describe.only("GET - /api/users", () => {
+describe("GET - /api/users", () => {
     it("GET:200 - responds with an array of users", () => {
         return request(app)
         .get("/api/users")
@@ -63,7 +63,6 @@ describe.only("GET - /api/users", () => {
         .get("/api/users")
         .expect(200)
         .then(({ body }) => {
-            console.log(body)
             expect(body).toBeSortedBy('points', { descending: true });
         })
     })
@@ -283,8 +282,51 @@ describe("GET - /api/users/:username/favourites", () => {
             .get("/api/users/adventure_jane/favourites")
             .expect(404)
             .then(({ body }) => {
-                console.log(body)
                 expect(body.msg).toBe('User has no favourites')
+            })
+        })
+    })
+})
+
+describe("POST - /api/users/:username/favourites", () => {
+    it("POST:201 - adds post to user's favourites", () => {
+        const newFavourite = {
+        username: "nature_lover",
+        post_id: 3
+        }
+        return request(app)
+        .post("/api/favourites")
+        .send(newFavourite)
+        .expect(201)
+        .then(({ body }) => {
+            expect(body.favouriteData).toEqual(expect.objectContaining({
+                username: expect.any(String),
+                post_id: expect.any(Number)
+                }))
+            })
+        })
+    describe("Error handling", () => {
+    it("POST:404 - returns an error for non-existent user", () => {
+        const newFavourite = {
+            username: "non_existent_user",
+            post_id: 3}
+            return request(app)
+            .post("/api/favourites")
+            .send(newFavourite)
+            .expect(404)
+            .then(({ body }) => {
+                expect(body).toEqual({ msg: 'Not found'})
+        })
+    })
+    it("POST:400 - returns an error if required fields are missing", () => {
+        const newFavourite = {
+            username: "nature_lover"}
+            return request(app)
+            .post("/api/favourites")
+            .send(newFavourite)
+            .expect(400)
+            .then(({ body }) => {
+                expect(body).toEqual({ msg: 'Missing required fields'})
             })
         })
     })
