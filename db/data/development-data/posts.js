@@ -20,16 +20,8 @@ module.exports = [
       post_img: "https://www.lincstrust.org.uk/sites/default/files/styles/scaled_default/public/2019-01/DonnaNook_Ruth%20Taylor_1.JPG?itok=AALwfbLf",
       description: "Caught this Siberian tiger in action!",
       created_at: "2024-11-13T14:45:00Z",
-      location: "POINT(2.274800, 53.486300)",
+      location: "POINT(2.274800 53.486300)",
       location_coord: "(2.274800, 53.486300)"
-    },
-    {
-      username: "urban_explorer",
-      post_img: "https://www.lincstrust.org.uk/sites/default/files/styles/scaled_default/public/2019-01/DonnaNook_Ruth%20Taylor_1.JPG?itok=AALwfbLf",
-      description: "Caught this Siberian tiger in action!",
-      created_at: "2024-11-13T14:45:00Z",
-      location: "POINT(51.52272 -0.23923)",
-      location_coord: "(51.52272 -0.23923)"
     },
     {
       username: "urban_explorer",
@@ -37,7 +29,7 @@ module.exports = [
       description: "Spotted this little beauty near the city park.",
       created_at: "2024-11-12T09:20:00Z",
       location: "POINT(51.52272 -0.23923)",
-      location_coord: "(51.52272 -0.23923)"
+      location_coord: "(51.52272, -0.23923)"
     },
     {
       username: "birding_bob",

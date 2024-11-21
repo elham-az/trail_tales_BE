@@ -14,6 +14,37 @@ module.exports =[
     username: 'birdEnthusiast',
     name: 'Thomas',
     profile_img: 'https://images.pexels.com/photos/27054224/pexels-photo-27054224/free-photo-of-motorbike-parked-on-hill-on-sea-coast.jpeg?auto=compress&cs=tinysrgb&w=800&lazy=load',
+    points: 30
+    }, 
+    {
+    username: 'wildlife_watcher',
+    name: 'Lana',
+    profile_img: 'https://images.pexels.com/photos/27054224/pexels-photo-27054224/free-photo-of-motorbike-parked-on-hill-on-sea-coast.jpeg?auto=compress&cs=tinysrgb&w=800&lazy=load',
     points: 42
-    }
+    }, 
+    {
+    username: 'urban_explorer',
+    name: 'Thomas',
+    profile_img: 'https://images.pexels.com/photos/27054224/pexels-photo-27054224/free-photo-of-motorbike-parked-on-hill-on-sea-coast.jpeg?auto=compress&cs=tinysrgb&w=800&lazy=load',
+    points: 15
+    }, 
+    {
+    username: 'birding_bob',
+    name: 'Bob',
+    profile_img: 'https://images.pexels.com/photos/27054224/pexels-photo-27054224/free-photo-of-motorbike-parked-on-hill-on-sea-coast.jpeg?auto=compress&cs=tinysrgb&w=800&lazy=load',
+    points: 12
+    },
+    {
+    username: 'hiking_annie',
+    name: 'Annie',
+    profile_img: 'https://images.pexels.com/photos/27054224/pexels-photo-27054224/free-photo-of-motorbike-parked-on-hill-on-sea-coast.jpeg?auto=compress&cs=tinysrgb&w=800&lazy=load',
+    points: 15
+    },
+    {
+    username: 'river_runner',
+    name: 'Jess',
+    profile_img: 'https://images.pexels.com/photos/27054224/pexels-photo-27054224/free-photo-of-motorbike-parked-on-hill-on-sea-coast.jpeg?auto=compress&cs=tinysrgb&w=800&lazy=load',
+    points: 8
+    },
+    
 ]
