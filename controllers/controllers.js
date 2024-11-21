@@ -1,4 +1,4 @@
-const {fetchUsers, fetchUsersByUsername, fetchPosts, fetchPostById, addPost, fetchUserFavourites, addUserFavourites} = require('../models/models')
+const {fetchUsers, fetchUsersByUsername, fetchPostsByMap, fetchAllPosts, fetchPostById, addPost, fetchUserFavourites, addUserFavourites} = require('../models/models')
 
 exports.getUsers = (request, response, next) => {
     const { sort_by, order } = request.query;
@@ -20,7 +20,7 @@ exports.getUsersByUsername = (request, response, next) => {
     })
 }
 
-exports.getPosts = (request, response, next) => {
+exports.getPostsByMap = (request, response, next) => {
     const { longitude, latitude, sort_by, order } = request.query;
     
     if (!latitude || !longitude) {
@@ -34,12 +34,21 @@ exports.getPosts = (request, response, next) => {
         return response.status(400).send({ msg: 'Invalid latitude or longitude values' });
     }
 
-    fetchPosts( longitude, latitude, sort_by, order)
+    fetchPostsByMap( longitude, latitude, sort_by, order)
         .then((posts) => {
             response.status(200).send({ posts });
         })
         .catch(next);
 };
+
+exports.getAllPosts = (request, response, next) => {
+    const { sort_by, order } = request.query
+    fetchAllPosts(sort_by, order)
+    .then((posts) => {
+        response.status(200).send({ posts })
+    })
+    .catch(next)
+}
 
 exports.getPostById = (request, response, next) => {
     const {post_id} = request.params

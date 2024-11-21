@@ -110,10 +110,10 @@ describe("Error handling", () => {
 })
 })
 
-describe("GET - /api/posts", () => {
-    it("GET:200 - responds with an array of posts with the correct properties", () => {
+describe("GET - /api/postsByMap", () => {
+    it("GET:200 - responds with an array of posts with area with the correct properties", () => {
         return request(app)
-        .get("/api/posts?longitude=-73.94581&latitude=40.807475")
+        .get("/api/postsByMap?longitude=-73.94581&latitude=40.807475")
         .expect(200)
         .then(({ body }) => {
             expect(Array.isArray(body.posts)).toBe(true);
@@ -129,7 +129,7 @@ describe("GET - /api/posts", () => {
     })
     it("GET:200 - responds with posts sorted by created_at in descending order", () => {
         return request(app)
-        .get("/api/posts?longitude=-73.94581&latitude=40.807475")
+        .get("/api/postsByMap?longitude=-73.94581&latitude=40.807475")
         .expect(200)
         .then(({ body }) => {
             expect(body.posts).toBeSortedBy('created_at', { descending: true });
@@ -137,7 +137,7 @@ describe("GET - /api/posts", () => {
     })
     it("GET:200 - responds with posts sorted by created_at in ascending order", () => {
         return request(app)
-        .get("/api/posts?sort_by=created_at&order=asc&longitude=-73.94581&latitude=40.807475")
+        .get("/api/postsByMap?sort_by=created_at&order=asc&longitude=-73.94581&latitude=40.807475")
         .expect(200)
         .then(({ body }) => {
             expect(body.posts).toBeSortedBy('created_at', { ascending: true });
@@ -146,7 +146,7 @@ describe("GET - /api/posts", () => {
     describe("Error handling", () => {
         it("GET:400 - returns an error when order is invalid", () => {
             return request(app)
-            .get("/api/posts?sort_by=created_at&order=invalid_order&longitude=-73.94581&latitude=40.807475")
+            .get("/api/postsByMap?sort_by=created_at&order=invalid_order&longitude=-73.94581&latitude=40.807475")
             .expect(400)
             .then(({ body }) => {
                 expect(body).toEqual({ msg: 'Invalid order query, must be either desc or asc' })
@@ -154,13 +154,50 @@ describe("GET - /api/posts", () => {
         })
         it("GET:400 - returns an error when sort_by is invalid", () => {
             return request(app)
-            .get("/api/posts?sort_by=invalid_column&longitude=-73.94581&latitude=40.807475")
+            .get("/api/postsByMap?sort_by=invalid_column&longitude=-73.94581&latitude=40.807475")
             .expect(({ body }) => {
                 expect(body).toEqual({ msg: 'Invalid sort_by query'})
             })
         })
     })  
 })
+
+describe("GET - /api/posts", () => {
+    it("GET:200 - responds with an array of posts with the correct properties", () => {
+        return request(app)
+        .get("/api/posts")
+        .expect(200)
+        .then(({ body }) => {
+            expect(Array.isArray(body.posts)).toBe(true);
+            expect(body.posts.length).not.toBe(0);
+            body.posts.forEach(post => {
+                expect(post).toHaveProperty('username', expect.any(String));
+                expect(post).toHaveProperty('post_img', expect.any(String));
+                expect(post).toHaveProperty('description', expect.any(String));
+                expect(post).toHaveProperty('created_at', expect.any(String));
+                expect(post).toHaveProperty('location', expect.any(String));
+            })
+        })
+    })
+    describe("Error handling", () => {
+        it("GET:400 - returns an error when order is invalid", () => {
+            return request(app)
+            .get("/api/posts?sort_by=created_at&order=invalid_order")
+            .expect(400)
+            .then(({ body }) => {
+                expect(body).toEqual({ msg: 'Invalid order query, must be either desc or asc' })
+            })
+        })
+        it("GET:400 - returns an error when sort_by is invalid", () => {
+            return request(app)
+            .get("/api/posts?sort_by=invalid_column")
+            .expect(({ body }) => {
+                expect(body).toEqual({ msg: 'Invalid sort_by query'})
+            })
+        })
+    })  
+})
+
 
 describe("GET - /api/posts/:post_id", () => {
     it("GET:200 - responds with a post object containing correct properties", () => {

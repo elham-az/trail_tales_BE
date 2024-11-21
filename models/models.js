@@ -32,7 +32,7 @@ exports.fetchUsersByUsername = (username) => {
     })
 }
 
-exports.fetchPosts = (longitude, latitude, sort_by = 'created_at', order = 'desc') => {
+exports.fetchPostsByMap = (longitude, latitude, sort_by = 'created_at', order = 'desc') => {
     const validSortBys = ['created_at'];
     const validOrders = ['desc', 'asc'];
 
@@ -61,6 +61,29 @@ exports.fetchPosts = (longitude, latitude, sort_by = 'created_at', order = 'desc
             return rows;
         });
 };
+
+exports.fetchAllPosts = (sort_by = 'created_at', order = 'desc') => {
+    const validSortBys = ['created_at']
+    const validOrders = ['desc', 'asc']
+
+    if(!validSortBys.includes(sort_by)) {
+        return Promise.reject({status: 400, msg: 'Invalid sort_by query'});
+    }
+    if(!validOrders.includes(order)) {
+        return Promise.reject({status: 400, msg: 'Invalid order query, must be either desc or asc'});
+    }
+
+    const query = (`SELECT * FROM posts ORDER BY ${sort_by} ${order};`)
+
+    return db.query(query)
+    .then(({ rows }) => {
+        if(rows.length === 0) {
+            return Promise.reject({status: 404, msg: 'No post found' })
+        }
+        return rows;
+    })
+}
+
 
 exports.fetchPostById = (post_id) => {
     return db.query(
