@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const { getUsersByUsername, getPosts, getPostById, postNewPost } = require(`./controllers/controllers`)
+const { getUsers, getUsersByUsername, getPosts, getPostById, postNewPost } = require(`./controllers/controllers`)
 const endpoints = require('./endpoints.json')
 const { psqlErrorHandlerOne, psqlErrorHandlerTwo, psqlErrorHandlerThree, customErrorHandler, serverErrorHandler } = require('./error-handlers');
 const cors = require('cors')
@@ -12,6 +12,8 @@ app.use(express.json())
 app.get('/api', (request, response) => {
     response.status(200).send({endpoints})
   })
+
+app.get('/api/users', getUsers)
 
 app.get('/api/users/:username', getUsersByUsername)
 

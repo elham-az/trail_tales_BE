@@ -6,8 +6,6 @@ const app = require("../app");
 const endpoints = require("../endpoints.json")
 require('jest-sorted');
 
-beforeEach(() => seed(data));
-
 // beforeEach(() => {
 //     return db.query('SELECT PostGIS_Full_Version();').then(({ rows }) => {console.log(rows)
 //         return seed(data)
@@ -22,8 +20,6 @@ beforeEach(() => seed(data));
 //     return db.query('SELECT * FROM posts;').then(({ rows }) => console.log());
 // });
 
-// afterAll(() => {return db.end()});
-
 beforeEach(() => seed(data));
 afterAll(() => db.end());
 
@@ -34,6 +30,25 @@ describe('app', () => {
        .expect(404)
     })
 })
+
+describe("GET - /api/users", () => {
+    it("GET:200 - responds with an array of users", () => {
+        return request(app)
+        .get("/api/users")
+        .expect(200)
+        .then(({ body }) => {
+            expect(body).toBeInstanceOf(Array)
+            expect(body.length).not.toBe(0)
+            body.forEach(user => {
+                expect(user).toHaveProperty('username', expect.any(String))
+                expect(user).toHaveProperty('name', expect.any(String))
+                expect(user).toHaveProperty('profile_img', expect.any(String))
+                expect(user).toHaveProperty('points', expect.any(Number))
+            })
+        })
+    })
+})
+
 describe("GET - /api/users/:username", () => {
     it("GET:200 - responds with a user object containing correct properties", () => {
         return request(app)
