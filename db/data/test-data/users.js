@@ -3,7 +3,8 @@ module.exports =[
     username: 'nature_lover',
     name: 'Alina',
     profile_img: 'https://plus.unsplash.com/premium_photo-1668110864450-48a6591c3a22?q=80&w=2804&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    points: 30},
+    points: 30
+    },
     {
     username: 'adventure_jane',
     name: 'Jane',

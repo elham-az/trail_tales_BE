@@ -87,3 +87,22 @@ exports.addPost = ({ username, post_img, description, location, location_coord }
             return rows[0];
     });
 };
+
+exports.fetchUserFavourites = (username) => {
+    return db.query(
+        `SELECT favourites.username, favourites.post_id, posts.post_img, posts.description, posts.created_at, posts.location, posts.location_coord
+        FROM favourites
+        JOIN posts
+        ON favourites.post_id = posts.post_id
+        WHERE favourites.username = $1;`,
+        [username])
+    .then(({rows}) => {
+        if (rows.length === 0) {
+            return Promise.reject({status: 404, msg: 'User has no favourites' })
+        }
+        return rows;
+    })
+    .catch(error => {
+        throw error
+    })
+}

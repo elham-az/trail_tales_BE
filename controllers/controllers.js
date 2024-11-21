@@ -1,4 +1,4 @@
-const {fetchUsers, fetchUsersByUsername, fetchPosts, fetchPostById, addPost} = require('../models/models')
+const {fetchUsers, fetchUsersByUsername, fetchPosts, fetchPostById, addPost, fetchUserFavourites} = require('../models/models')
 
 exports.getUsers = (request, response, next) => {
     const { sort_by, order } = request.query;
@@ -77,3 +77,35 @@ exports.postNewPost = (request, response, next) => {
         })
         .catch(next);
 }
+
+exports.getUserFavourites = (request, response, next) => {
+    const { username } = request.params;
+    
+    fetchUserFavourites(username)
+    .then((favourites) => {
+        response.status(200).send({favourites})
+    })
+    .catch((error) => {
+        next(error)
+    })
+}
+
+// exports.getUserFavourites = (request, response, next) => {
+//     const { username } = request.params;
+
+//     fetchUsers()
+//     .then((users) => {
+//         return users.map((validUser) => {
+//             return validUser.username 
+//         })
+//     })
+//     .then((validUser) => {
+//         return fetchUserFavourites(username, validUser)
+//     .then((favourites) => {
+//         response.status(200).send({favourites})
+//     })
+//     })    
+//     .catch((error) => {
+//         next(error)
+//     })
+// }

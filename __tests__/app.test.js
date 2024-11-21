@@ -242,3 +242,37 @@ describe("POST - /api/post", () => {
         })
     })
 })
+
+describe("GET - /api/users/:username/favourites", () => {
+    it("GET:200 - responds with an array of users's favourites", () => {
+        return request(app)
+        .get("/api/users/nature_lover/favourites")
+        .expect(200)
+        .then(({ body }) => {
+            expect(body.favourites).toBeInstanceOf(Array)
+            expect(body.favourites.length).not.toBe(0)
+            body.favourites.forEach(favourite => {
+                expect(favourite).toHaveProperty('username', expect.any(String))
+                expect(favourite).toHaveProperty('post_img', expect.any(String))
+                expect(favourite).toHaveProperty('description', expect.any(String))
+                expect(favourite).toHaveProperty('created_at', expect.any(String))
+                expect(favourite).toHaveProperty('location', expect.any(String))
+                expect(favourite).toHaveProperty('location_coord', expect.objectContaining({
+                    x: expect.any(Number),
+                    y: expect.any(Number),
+                }))
+            })
+        })
+    })
+    describe("Error handling", () => {
+        it("GET:404 - returns an error for a user with no favourites", () => {
+            return request(app)
+            .get("/api/users/adventure_jane/favourites")
+            .expect(404)
+            .then(({ body }) => {
+                console.log(body)
+                expect(body.msg).toBe('User has no favourites')
+            })
+        })
+    })
+})
