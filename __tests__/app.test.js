@@ -63,6 +63,16 @@ describe("GET - /api/users", () => {
             expect(body).toBeSortedBy('points', { ascending: true });
         })
     })
+    describe("Error handling", () => {
+        it("GET:400 - returns an error when order is invalid", () => {
+            return request(app)
+            .get("/api/users?order=invalid_order")
+            .expect(400)
+            .then(({ body }) => {
+                expect(body).toEqual({ msg: 'Invalid order query, must be either desc or asc' })
+            })
+        })
+    })
 })
 
 describe("GET - /api/users/:username", () => {
