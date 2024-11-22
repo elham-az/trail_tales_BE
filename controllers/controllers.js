@@ -1,4 +1,4 @@
-const {fetchUsers, fetchUsersByUsername, fetchPostsByMap, fetchAllPosts, fetchPostById, addPost, fetchUserFavourites, addUserFavourites, updateUser} = require('../models/models')
+const {fetchUsers, fetchUsersByUsername, fetchPostsByMap, fetchAllPosts, fetchPostById, addPost, fetchUserFavourites, addUserFavourites, updateUser, deletePostModel, deleteFavouriteModel} = require('../models/models')
 
 exports.getUsers = (request, response, next) => {
     const { sort_by, order } = request.query;
@@ -99,26 +99,6 @@ exports.getUserFavourites = (request, response, next) => {
     })
 }
 
-// exports.getUserFavourites = (request, response, next) => {
-//     const { username } = request.params;
-
-//     fetchUsers()
-//     .then((users) => {
-//         return users.map((validUser) => {
-//             return validUser.username 
-//         })
-//     })
-//     .then((validUser) => {
-//         return fetchUserFavourites(username, validUser)
-//     .then((favourites) => {
-//         response.status(200).send({favourites})
-//     })
-//     })    
-//     .catch((error) => {
-//         next(error)
-//     })
-// }
-
 exports.postUserFavourites = (request, response, next) => {
     const { username, post_id } = request.body;
 
@@ -140,6 +120,61 @@ exports.postUserFavourites = (request, response, next) => {
     })
 }
 
-exports.patchUser = () => {
-    updateUser()
+exports.patchUser = (request, response, next) => {
+    const { username } = request.params
+    const { name, profile_img, points } = request.body
+  
+    updateUser(username, name, profile_img, points)
+      .then((updatedUser) => {
+        response.status(200).send({ user: updatedUser });
+      })
+      .catch((error) => {
+        next(error)
+    })
 }
+
+exports.deletePost = (request, response, next) => {
+    const {post_id} = request.params;
+
+    deletePostModel(post_id)
+        .then(() => {
+            response.status(204).send()
+        })
+        .catch((error) => {
+            next(error)
+        })
+}
+
+exports.deleteFavourite = (request, response, next) => {
+    const { username, post_id } = request.params;
+    
+    deleteFavouriteModel(username, post_id)
+        .then(() => {
+            response.status(204).send()
+        })
+        .catch((error) => {
+            next(error)
+        })
+}
+
+// exports.getUserFavourites = (request, response, next) => {
+//     const { username } = request.params;
+
+//     fetchUsers()
+//     .then((users) => {
+//         return users.map((validUser) => {
+//             return validUser.username 
+//         })
+//     })
+//     .then((validUser) => {
+//         return fetchUserFavourites(username, validUser)
+//     .then((favourites) => {
+//         response.status(200).send({favourites})
+//     })
+//     })    
+//     .catch((error) => {
+//         next(error)
+//     })
+// }
+
+

@@ -1,4 +1,4 @@
-DROP DATABASE IF EXISTS trail_tales__test;
+DROP DATABASE IF EXISTS trail_tales_test;
 DROP DATABASE IF EXISTS trail_tales;
 DROP EXTENSION IF EXISTS postgis;
 

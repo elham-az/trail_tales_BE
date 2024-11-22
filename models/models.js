@@ -73,7 +73,9 @@ exports.fetchAllPosts = (sort_by = 'created_at', order = 'desc') => {
         return Promise.reject({status: 400, msg: 'Invalid order query, must be either desc or asc'});
     }
 
-    const query = (`SELECT * FROM posts ORDER BY ${sort_by} ${order};`)
+    const query = (`SELECT *
+        FROM posts
+        ORDER BY ${sort_by} ${order};`)
 
     return db.query(query)
     .then(({ rows }) => {
@@ -138,7 +140,59 @@ exports.addUserFavourites = ({ username, post_id }) => {
     })
 }
 
-exports.updateUser = (name, profile_img, points) => {
-    return db.query(`UPDATE users SET (name, profile_img, points) WHERE `)
+exports.updateUser = (username, name, profile_img, points) => {
+    return db.query(
+    `
+      UPDATE users
+      SET name = COALESCE($1, name),
+      profile_img = COALESCE($2, profile_img),
+      points = COALESCE($3, points)
+      WHERE username = $4
+      RETURNING *;`,
+      [name, profile_img, points, username]
+    )
+    .then(({rows}) => {
+      if (rows.length === 0) {
+        return Promise.reject({ status: 404, msg: 'User not found' })
+      }
+      return rows[0]
+    })
+  }
+
+  exports.deletePostModel = (post_id) => {
+    return db.query(`
+        DELETE 
+        FROM favourites 
+        WHERE post_id = $1;`, 
+        [post_id]
+    ).then(() => {
+        return db.query(`
+            DELETE 
+            FROM posts 
+            WHERE post_id = $1 RETURNING *;`, 
+            [post_id]
+        ).then(({ rows }) => {
+            if (rows.length === 0) {
+                return Promise.reject({ status: 404, msg: 'post not found' })
+            }
+        })
+    })
+}
+
+exports.deleteFavouriteModel = (username, post_id) => {
+    return db.query(
+        `DELETE FROM favourites 
+        WHERE username = $1 AND post_id = $2
+        RETURNING *;`, 
+        [username, post_id]
+    )
+    .then(({ rows }) => {
+        if (rows.length === 0) {
+            return Promise.reject({
+                status: 404,
+                msg: 'favourite not found'
+            })
+        }
+    })
 }
     

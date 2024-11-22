@@ -7,16 +7,27 @@
   "queries": ["sort_by", "order"],
   "validSortBys": ["points"],
   "validOrders": ["asc", "desc"],
-  "exampleResponse": {
-    "users": [
+  "exampleResponse": 
+    [
       {
-      "username": "nature_lover",
-      "name": "Alina",
-      "profile_img": "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg",
-      "points": 13
+        "username": "wildlife_watcher",
+        "name": "Lana",
+        "profile_img": "https://images.pexels.com/photos/27054224/pexels-photo-27054224/free-photo-of-motorbike-parked-on-hill-on-sea-coast.jpeg?auto=compress&cs=tinysrgb&w=800&lazy=load",
+        "points": 42
+      },
+      {
+        "username": "nature_lover",
+        "name": "Alina",
+        "profile_img": "https://plus.unsplash.com/premium_photo-1668110864450-48a6591c3a22?q=80&w=2804&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "points": 30
+      },
+      {
+        "username": "birdEnthusiast",
+        "name": "Thomas",
+        "profile_img": "https://images.pexels.com/photos/27054224/pexels-photo-27054224/free-photo-of-motorbike-parked-on-hill-on-sea-coast.jpeg?auto=compress&cs=tinysrgb&w=800&lazy=load",
+        "points": 30
       }
     ]
-  }
   },
     "GET /api/users/:username": {
   "description": "returns a user object by username",
@@ -39,12 +50,15 @@
       "posts": [
         {
           "post_id": 1,
-          "username": "happyBird",
-          "post_img": "URLlink",
-          "description": "a bird",
-          "created_at": "2018-05-30T15:59:13.341Z",
-          "location": "(53.455645, 0.188402)",
-          "location_coord": "(-73.94581, 40.807475)"
+          "username": "nature_lover",
+          "post_img": "https://media.gettyimages.com/id/993489488/photo/peregrine-falcon-adult-female-warming-its-chicks-city-church-esslingen-baden-wuerttemberg.jpg?s=612x612&w=gi&k=20&c=FXlV3zDkpidzWObT8njwXc3AfexCEa3n8_mS89a-QaY=",
+          "description": "Check this amazing Peregrine falcons' nest.",
+          "created_at": "2024-11-15T10:30:00.000Z",
+          "location": "0101000020E6100000B48EAA26887C52C036AB3E575B674440",
+          "location_coord": {
+            "x": -73.94581,
+            "y": 40.807475
+          }
         }
       ]
     }
@@ -91,7 +105,14 @@
     "post_img": "string",
     "description": "string required",
     "location": "string required",
-    "location_coord": "string optional required"
+    "location_coord": "string required"
+  },
+  "exampleRequestBody": {
+    "username": "nature_lover",
+    "post_img": "https://media.gettyimages.com/id/993489488/photo/peregrine-falcon-adult-female-warming-its-chicks-city-church-esslingen-baden-wuerttemberg.jpg?s=612x612&w=gi&k=20&c=FXlV3zDkpidzWObT8njwXc3AfexCEa3n8_mS89a-QaY=",
+    "description": "Check this new amazing Peregrine falcons' nest.",
+    "location": "POINT(-73.94579 40.807472)",
+    "location_coord": "(-73.94579, 40.807472)"
   },
   "exampleResponse": {
     "post": {
@@ -117,7 +138,10 @@
         "description": "Check this amazing Peregrine falcons' nest.",
         "created_at": "2024-11-15T10:30:00.000Z",
         "location": "0101000020E6100000B48EAA26887C52C036AB3E575B674440",
-        "location_coord": "{x:-73.94581, y:40.807475}"
+        "location_coord": {
+          "x": -73.94581,
+          "y": 40.807475
+        }
       },
       {
         "username": "nature_lover",
@@ -125,10 +149,14 @@
         "post_img": "https://www.lincstrust.org.uk/sites/default/files/styles/scaled_default/public/2019-01/DonnaNook_Ruth%20Taylor_1.JPG?itok=AALwfbLf",
         "description": "Amazing seals.",
         "created_at": "2024-11-14T08:15:00.000Z",
-        "location": "0101000020E6100000376DC669887C52C0C18BBE8234674440",
-        "location_coord": "{x:-73.945826, y:40.80629}"
-      }]
-    }
+        "location": "0101000020E61000006DE7FBA9F15202C082E2C798BBBE4A40",
+        "location_coord": {
+          "x": -2.2905,
+          "y": 53.4901
+        }
+      }
+    ]
+  }
   },
   "POST /api/favourites": {
   "description": "Adds favourite",
@@ -137,11 +165,53 @@
     "username": "string required",
     "post_id": "number required"
   },
+  "exampleRequestBody": {
+    "username": "nature_lover",
+    "post_id": 3
+  },
   "exampleResponse": {
     "favourites": {
       "username": "nature_lover",
-      "post_id": 5
+      "post_id": 3
     }
   }
-}
+  },
+  "PATCH /api/users/:username": {
+  "description": "Updates post. Request body accepts an object with 'name', 'profile_img', points'. Responds with the updated post. Note, these properties are not all required, include in body ones you want to update, the rest will remain as before",
+  "queries": [],
+  "requestBody": {
+    "name": "String",
+    "profile_img": "String",
+    "points": "Number"
+  },
+  "exampleRequestBody": {
+    "name": "natureHater",
+    "profile_img": "https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_16x9.jpg?w=1200",
+    "points": 999999
+  },
+  "exampleResponse": {
+    "user": {
+      "username": "nature_lover",
+      "name": "natureHater",
+      "profile_img": "https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_16x9.jpg?w=1200",
+      "points": 999999
+    }
+  }
+  },
+  "DELETE /api/posts/:post_id": {
+  "description": "Deletes post as well as favourites, if that post also exists on favourites.",
+  "queries": [],
+  "example_response": {
+      "status": 204,
+      "content": null
+    }
+  },
+  "DELETE /api/users/:username/favourites/:post_id": {
+  "description": "Deletes favourite for that user.",
+  "queries": [],
+  "example_response": {
+      "status": 204,
+      "content": null
+    }
+  }
 }

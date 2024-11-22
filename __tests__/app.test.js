@@ -198,7 +198,6 @@ describe("GET - /api/posts", () => {
     })  
 })
 
-
 describe("GET - /api/posts/:post_id", () => {
     it("GET:200 - responds with a post object containing correct properties", () => {
         return request(app)
@@ -325,7 +324,7 @@ describe("GET - /api/users/:username/favourites", () => {
     })
 })
 
-describe("POST - /api/users/:username/favourites", () => {
+describe("POST - /api/favourites", () => {
     it("POST:201 - adds post to user's favourites", () => {
         const newFavourite = {
         username: "nature_lover",
@@ -366,5 +365,139 @@ describe("POST - /api/users/:username/favourites", () => {
                 expect(body).toEqual({ msg: 'Missing required fields'})
             })
         })
+    })
+})
+
+describe('PATCH /api/users/:username', () => {
+    it('200: updates user details', () => {
+      return request(app)
+        .patch('/api/users/nature_lover')
+        .send({
+            "name": "Alinaaaa",
+            "profile_img": "https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_16x9.jpg?w=1200",
+            "points": 40
+          }
+          )
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.user).toEqual({
+            username: 'nature_lover',
+            name: 'Alinaaaa',
+            profile_img: 'https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_16x9.jpg?w=1200',
+            points: 40
+          })
+        })
+    });
+    it('200: does not change user data if body request empty', () => {
+      return request(app)
+        .patch('/api/users/nature_lover')
+        .send({})
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.user).toEqual({
+            username: 'nature_lover',
+            name: 'Alina',
+            profile_img: 'https://plus.unsplash.com/premium_photo-1668110864450-48a6591c3a22?q=80&w=2804&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+            points: 30
+          })
+        })
+    });
+    it('200: allows partial update of user', () => {
+      return request(app)
+        .patch('/api/users/nature_lover')
+        .send({
+          name: 'Alinaaaa'
+        })
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.user).toEqual({
+            username: 'nature_lover',
+            name: 'Alinaaaa',
+            profile_img: 'https://plus.unsplash.com/premium_photo-1668110864450-48a6591c3a22?q=80&w=2804&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+            points: 30
+          })
+        })
+    });
+    describe('Error handling', () => {
+    it('404: responds with an error if the username does not exist', () => {
+      return request(app)
+        .patch('/api/users/non_existent_user')
+        .send({
+          name: 'yes'
+        })
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe('User not found');
+        })
+    });
+    it('400: ignores unsupported fields in request body', () => {
+      return request(app)
+        .patch('/api/users/nature_lover')
+        .send({
+          username: 'shush',
+          favouriteAnimal: 'dog'
+        })
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.user).toEqual({
+            username: 'nature_lover',
+            name: 'Alina',
+            profile_img: 'https://plus.unsplash.com/premium_photo-1668110864450-48a6591c3a22?q=80&w=2804&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+            points: 30
+          })
+        })
+    })
+  })
+})
+
+describe('DELETE /api/posts/:post_id', () => {
+    it('204: delete the post by post_id', () => {
+        return request(app)
+            .delete('/api/posts/1')
+            .expect(204)
+    })
+    describe('Error handling', () => {
+    it('404: responds with "post not found" when post_id does not exist', () => {
+        return request(app)
+            .delete('/api/posts/9999')
+            .expect(404)
+            .then(({ body }) => {
+                expect(body.msg).toBe('post not found')
+            })
+    })
+    it('400: responds with "Invalid type" for invalid post_id', () => {
+        return request(app)
+            .delete('/api/posts/invalidId')
+            .expect(400)
+            .then(({ body }) => {
+                expect(body.msg).toBe('Invalid type')
+            })
+    })
+    })
+})
+
+describe('DELETE /api/users/:username/favourites/:post_id', () => {
+    it('204: delete the favourite by username and post_id', () => {
+        return request(app)
+            .delete('/api/users/nature_lover/favourites/1')
+            .expect(204)
+    })
+    describe('Error handling', () => {
+    it('404: responds with "post not found" when post_id does not exist', () => {
+        return request(app)
+            .delete('/api/users/nature_lover/favourites/999')
+            .expect(404)
+            .then(({ body }) => {
+                expect(body.msg).toBe('favourite not found')
+            })
+    })
+    it('400: responds with "Invalid type" for invalid post_id', () => {
+        return request(app)
+            .delete('/api/users/nature_lover/favourites/invalid')
+            .expect(400)
+            .then(({ body }) => {
+                expect(body.msg).toBe('Invalid type')
+            })
+    })
     })
 })
