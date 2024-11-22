@@ -32,7 +32,7 @@ exports.fetchUsersByUsername = (username) => {
     })
 }
 
-exports.fetchPostsByMap = (longitude, latitude, sort_by = 'created_at', order = 'desc') => {
+exports.fetchPostsByMap = (longitude, latitude, sort_by = 'created_at', order = 'desc', radius = 10000) => {
     const validSortBys = ['created_at'];
     const validOrders = ['desc', 'asc'];
 
@@ -49,14 +49,14 @@ exports.fetchPostsByMap = (longitude, latitude, sort_by = 'created_at', order = 
         WHERE ST_DWithin(
             location, 
             ST_SetSRID(ST_MakePoint($1, $2), 4326), -- User's lat, lon converted to geometry
-            10000 -- 10 km distance in meters
+            $3
         )
         ORDER BY ${sort_by} ${order};`)
 
-    return db.query(query, [longitude, latitude])
+    return db.query(query, [longitude, latitude, radius])
         .then(({ rows }) => {
             if (rows.length === 0) {
-                return Promise.reject({ status: 404, msg: 'No posts found within 10 km' });
+                return Promise.reject({ status: 404, msg: `No posts found within ${radius}/1000 km` });
             }
             return rows;
         });

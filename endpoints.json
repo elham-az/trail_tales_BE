@@ -42,10 +42,11 @@
   }
   },
     "GET /api/postsByMap": {
-    "description": "serves an array of all posts within area (takes longitude and latitude) sorting by specified columns (sort_by) for created_at and order (asc/desc).",
-    "queries": ["sort_by", "order", "longitude", "latitude"],
+    "description": "serves an array of all posts within (optional input of radius, which is defaulted to 10km if not inputted) area (takes longitude and latitude) sorting by specified columns (sort_by) for created_at and order (asc/desc).",
+    "queries": ["sort_by", "order", "longitude", "latitude", "radius"],
     "validSortBys": ["created_at"],
     "validOrders": ["asc", "desc"],
+    "validRadius": ["positive number"],
     "exampleResponse": {
       "posts": [
         {

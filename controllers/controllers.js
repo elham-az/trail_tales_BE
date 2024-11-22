@@ -21,11 +21,12 @@ exports.getUsersByUsername = (request, response, next) => {
 }
 
 exports.getPostsByMap = (request, response, next) => {
-    const { longitude, latitude, sort_by, order } = request.query;
+    const { longitude, latitude, sort_by, order, radius } = request.query;
     
     if (!latitude || !longitude) {
         return response.status(400).send({ msg: 'Latitude and longitude are required' });
     }
+
     if (
         isNaN(latitude) || isNaN(longitude) ||
         latitude < -90 || latitude > 90 ||
@@ -34,7 +35,11 @@ exports.getPostsByMap = (request, response, next) => {
         return response.status(400).send({ msg: 'Invalid latitude or longitude values' });
     }
 
-    fetchPostsByMap( longitude, latitude, sort_by, order)
+    if (radius && (isNaN(radius) || radius <= 0)) {
+        return response.status(400).send({ msg: 'radius must be a positive number' })
+    }
+
+    fetchPostsByMap( longitude, latitude, sort_by, order, radius)
         .then((posts) => {
             response.status(200).send({ posts });
         })

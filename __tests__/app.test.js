@@ -127,6 +127,22 @@ describe("GET - /api/postsByMap", () => {
             })
         })
     })
+    it("GET:200 - responds with an array of posts within 1000000000.5m area with the correct properties", () => {
+        return request(app)
+        .get("/api/postsByMap?longitude=-73.94581&latitude=40.807475&radius=1000000000.5")
+        .expect(200)
+        .then(({ body }) => {
+            expect(Array.isArray(body.posts)).toBe(true);
+            expect(body.posts.length).not.toBe(0);
+            body.posts.forEach(post => {
+                expect(post).toHaveProperty('username', expect.any(String));
+                expect(post).toHaveProperty('post_img', expect.any(String));
+                expect(post).toHaveProperty('description', expect.any(String));
+                expect(post).toHaveProperty('created_at', expect.any(String));
+                expect(post).toHaveProperty('location', expect.any(String));
+            })
+        })
+    })
     it("GET:200 - responds with posts sorted by created_at in descending order", () => {
         return request(app)
         .get("/api/postsByMap?longitude=-73.94581&latitude=40.807475")
@@ -157,6 +173,14 @@ describe("GET - /api/postsByMap", () => {
             .get("/api/postsByMap?sort_by=invalid_column&longitude=-73.94581&latitude=40.807475")
             .expect(({ body }) => {
                 expect(body).toEqual({ msg: 'Invalid sort_by query'})
+            })
+        })
+        it("GET:400 - returns an error when radius is invalid", () => {
+            return request(app)
+            .get("/api/postsByMap?sort_by=created_at&order=asc&longitude=-73.94581&latitude=40.807475&radius=-5000")
+            .expect(400)
+            .then(({ body }) => {
+                expect(body).toEqual({ msg: 'radius must be a positive number' })
             })
         })
     })  
