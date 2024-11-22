@@ -94,7 +94,8 @@
       "description": "Check this amazing Peregrine falcons' nest.",
       "created_at": "2024-11-15T10:30:00Z",
       "location": "(54.072753, -2.159008)",
-      "location_coord": "{x:-73.94581, y:40.807475}"
+      "location_coord": "{x: 54.072753, y:-2.159008}",
+      "note": "x is latitude and y is longitude"
     }
     }
   },
