@@ -188,8 +188,8 @@ module.exports = [
     post_img: "https://images.unsplash.com/photo-1521673107607-1ca9a8184520?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     description: "Robin in the garden",
     created_at: "2024-11-15T11:11:00Z",
-    location: "POINT(53.899092 -1.620386)",
-    location_coord: "(53.899092, -1.620386)"
+    location: "POINT(53.908111 -1.606151)",
+    location_coord: "(53.908111, -1.606151)"
   },
   {
     username: "adventure_jane",
