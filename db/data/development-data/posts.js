@@ -294,6 +294,22 @@ module.exports = [
     created_at: "2024-11-14T11:37:00Z",
     location: "POINT(54.149051 -0.165512)",
     location_coord: "(54.149051, -0.165512)"
+  },
+  {
+    username: "birdEnthusiast",
+    post_img: "https://images.unsplash.com/photo-1698389512655-5fff49f6c9ca?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    description: "Great spotted woodpecker",
+    created_at: "2024-11-22T12:37:00Z",
+    location: "POINT(52.438387 0.667848)",
+    location_coord: "(52.438387, 0.667848)"
+  },
+  {
+    username: "MattO",
+    post_img: "https://images.unsplash.com/photo-1725190284020-da1765d817d6?q=80&w=2549&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    description: "Green parakeet",
+    created_at: "2024-11-20T15:37:00Z",
+    location: "POINT(51.942377 -1.809412)",
+    location_coord: "(51.942377, -1.809412)"
   }
 ]
 
