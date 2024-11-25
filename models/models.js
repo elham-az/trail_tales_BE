@@ -128,6 +128,41 @@ exports.fetchUserFavourites = (username) => {
     })
 }
 
+exports.fetchAllPostsAndFavourites = (username) => {
+    const query = `
+      SELECT
+        p.*,
+        EXISTS (
+          SELECT 1
+          FROM favourites f
+          WHERE f.username = $2 AND f.post_id = p.post_id
+        ) AS is_favorited
+      FROM posts p
+    `;
+    return db.query(query, [username])
+      .then(({ rows }) => {
+        return rows
+      })
+}
+
+exports.fetchIsFavourited = (post_id, username) => {
+const query = `
+    SELECT
+    p.*,
+    EXISTS (
+        SELECT 1
+        FROM favourites f
+        WHERE f.username = $2 AND f.post_id = p.post_id
+    ) AS is_favorited
+    FROM posts p
+    WHERE p.post_id = $1;
+`;
+return db.query(query, [post_id, username])
+    .then(({ rows }) => {
+    return rows[0]
+    })
+}
+
 exports.addUserFavourites = ({ username, post_id }) => {
     return db.query(
     `INSERT INTO favourites (username, post_id)

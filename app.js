@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const { getUsers, getUsersByUsername, getPostsByMap, getPostById, postNewPost, getUserFavourites, postUserFavourites, getAllPosts, patchUser, deletePost, deleteFavourite } = require(`./controllers/controllers`)
+const { getUsers, getUsersByUsername, getPostsByMap, getPostById, postNewPost, getUserFavourites, postUserFavourites, getAllPosts, patchUser, deletePost, deleteFavourite, getAllPostsAndFavourites, getIsFavourited } = require(`./controllers/controllers`)
 const endpoints = require('./endpoints.json')
 const { psqlErrorHandlerOne, psqlErrorHandlerTwo, psqlErrorHandlerThree, customErrorHandler, serverErrorHandler } = require('./error-handlers');
 const cors = require('cors')
@@ -26,6 +26,10 @@ app.get('/api/posts/:post_id', getPostById)
 app.post('/api/post', postNewPost)
 
 app.get('/api/users/:username/favourites',getUserFavourites)
+
+app.get('/api/postsandfavourites/:username',getAllPostsAndFavourites)
+
+app.get('/api/post/:post_id/:username',getIsFavourited)
 
 app.post('/api/favourites', postUserFavourites)
 
