@@ -19,17 +19,17 @@ app.get('/api/users/:username', getUsersByUsername)
 
 app.get('/api/postsByMap', getPostsByMap)
 
-app.get('/api/posts', getAllPosts)
+// app.get('/api/posts', getAllPosts)
 
-app.get('/api/posts/:post_id', getPostById)
+// app.get('/api/posts/:post_id', getPostById)
 
 app.post('/api/post', postNewPost)
 
 app.get('/api/users/:username/favourites',getUserFavourites)
 
-app.get('/api/postsandfavourites/:username',getAllPostsAndFavourites)
+app.get('/api/posts/:username',getAllPostsAndFavourites)
 
-app.get('/api/post/:post_id/:username',getIsFavourited)
+app.get('/api/posts/:post_id/:username',getIsFavourited)
 
 app.post('/api/favourites', postUserFavourites)
 
