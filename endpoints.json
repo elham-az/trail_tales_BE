@@ -64,7 +64,7 @@
       ]
     }
   },
-    "GET /api/posts": {
+    "GET /api/posts/:username": {
     "description": "serves an array of all posts with optional sorting by specified columns (sort_by) for created_at and order (asc/desc).",
     "queries": ["sort_by", "order"],
     "validSortBys": ["created_at"],

@@ -128,7 +128,7 @@ exports.fetchUserFavourites = (username) => {
     })
 }
 
-exports.fetchAllPostsAndFavourites = (username) => {
+exports.fetchAllPostsAndFavourites = (sort_by = 'created_at', order='desc', username) => {
     const query = `
       SELECT
         p.*,
@@ -138,6 +138,7 @@ exports.fetchAllPostsAndFavourites = (username) => {
           WHERE f.username = $1 AND f.post_id = p.post_id
         ) AS is_favorited
       FROM posts p
+      ORDER BY ${sort_by} ${order};
     `;
     return db.query(query, [username])
       .then(({ rows }) => {
@@ -159,7 +160,10 @@ const query = `
 `;
 return db.query(query, [post_id, username])
     .then(({ rows }) => {
-    return rows[0]
+        if(rows.length === 0) {
+            return Promise.reject({status: 404, msg: 'No post found' })
+        }
+        return rows[0]
     })
 }
 

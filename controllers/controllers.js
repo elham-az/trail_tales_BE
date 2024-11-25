@@ -106,10 +106,11 @@ exports.getUserFavourites = (request, response, next) => {
 
 exports.getAllPostsAndFavourites = (request, response, next) => {
     const { username } = request.params;
+    const { sort_by, order } = request.query;
     
-    fetchAllPostsAndFavourites(username)
-    .then((favourites) => {
-        response.status(200).send(favourites)
+    fetchAllPostsAndFavourites(sort_by, order, username)
+    .then((posts) => {
+        response.status(200).send({posts})
     })
     .catch((error) => {
         next(error)
@@ -120,8 +121,8 @@ exports.getIsFavourited = (request, response, next) => {
     const { post_id, username } = request.params;
     
     fetchIsFavourited(post_id,username)
-    .then((favourites) => {
-        response.status(200).send(favourites)
+    .then((post) => {
+        response.status(200).send(post)
     })
     .catch((error) => {
         next(error)
