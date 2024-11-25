@@ -135,7 +135,7 @@ exports.fetchAllPostsAndFavourites = (username) => {
         EXISTS (
           SELECT 1
           FROM favourites f
-          WHERE f.username = $2 AND f.post_id = p.post_id
+          WHERE f.username = $1 AND f.post_id = p.post_id
         ) AS is_favorited
       FROM posts p
     `;
