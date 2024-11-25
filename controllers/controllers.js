@@ -47,8 +47,8 @@ exports.getPostsByMap = (request, response, next) => {
 };
 
 exports.getAllPosts = (request, response, next) => {
-    const { sort_by, order } = request.query
-    fetchAllPosts(sort_by, order)
+    const { sort_by, order, username } = request.query
+    fetchAllPosts(sort_by, order, username)
     .then((posts) => {
         response.status(200).send({ posts })
     })
@@ -57,7 +57,8 @@ exports.getAllPosts = (request, response, next) => {
 
 exports.getPostById = (request, response, next) => {
     const {post_id} = request.params
-    fetchPostById(post_id)
+    const { username } = request.query
+    fetchPostById(post_id, username)
     .then((post) => {
         response.status(200).send({post})
     })
