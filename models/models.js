@@ -62,7 +62,7 @@ exports.fetchPostsByMap = (longitude, latitude, sort_by = 'created_at', order = 
         });
 };
 
-exports.fetchAllPosts = (sort_by = 'created_at', order = 'desc', username) => {
+exports.fetchAllPosts = (sort_by = 'created_at', order = 'desc') => {
     const validSortBys = ['created_at']
     const validOrders = ['desc', 'asc']
 
@@ -73,45 +73,32 @@ exports.fetchAllPosts = (sort_by = 'created_at', order = 'desc', username) => {
         return Promise.reject({status: 400, msg: 'Invalid order query, must be either desc or asc'});
     }
 
-    const query = `
-      SELECT
-        p.*,
-        EXISTS (
-          SELECT 1
-          FROM favourites f
-          WHERE f.username = $2 AND f.post_id = p.post_id
-        ) AS is_favorited
-      FROM posts p
-      ORDER BY ${sort_by} ${order};
-    `;
-    return db.query(query, [username])
-      .then(({ rows }) => {
-        if(rows.length === 0) {
-            return Promise.reject({status: 404, msg: 'No post found' })
-        }
-        return rows
-      })
-};
+    const query = (`SELECT *
+        FROM posts
+        ORDER BY ${sort_by} ${order};`)
 
-exports.fetchPostById = (post_id, username) => {
-    const query = `
-      SELECT
-        p.*,
-        EXISTS (
-          SELECT 1
-          FROM favourites f
-          WHERE f.username = $2 AND f.post_id = p.post_id
-        ) AS is_favorited
-      FROM posts p
-      WHERE p.post_id = $1;
-    `;
-    return db.query(query, [post_id, username])
-      .then(({ rows }) => {
+    return db.query(query)
+    .then(({ rows }) => {
         if(rows.length === 0) {
             return Promise.reject({status: 404, msg: 'No post found' })
         }
-        return rows[0]
-      })
+        return rows;
+    })
+}
+
+exports.fetchPostById = (post_id) => {
+    return db.query(
+        `SELECT *
+        FROM posts
+        WHERE post_id = $1`,
+        [post_id]
+    )
+    .then(({rows}) => {
+        if(rows.length === 0) {
+            return Promise.reject({status: 404, msg: 'No post found' })
+        }
+        return rows[0];
+    })
 }
 
 exports.addPost = ({ username, post_img, description, location, location_coord }) => {
