@@ -66,23 +66,25 @@ exports.getPostById = (request, response, next) => {
 
 exports.postNewPost = (request, response, next) => {
     const { username, post_img, description, location, location_coord } = request.body;
-    const { longitude, latitude } = request.query;
+    // const { longitude, latitude } = request.query;
 
     if (!username || !description || !location || !location_coord) {
         return response.status(400).send({ msg: "Missing required fields" });
     }
 
-    if (!longitude || !latitude) {
-        return response.status(400).send({ msg: "Longitude and latitude are required" });
-    }
+    // if (!longitude || !latitude) {
+    //     return response.status(400).send({ msg: "Longitude and latitude are required" });
+    // }
 
-    const formattedLocation = `POINT(${longitude} ${latitude})`;
+    // const formattedLocation = `POINT(${longitude} ${latitude})`;
+
+    // const formattedLocation = `POINT(${location.latitude} ${location.longitude})`;
 
     const newPost = {
         username,
         post_img,
         description,
-        location: formattedLocation,
+        location,
         location_coord
     };
     addPost(newPost)

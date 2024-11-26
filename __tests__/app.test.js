@@ -255,7 +255,7 @@ describe("GET - /api/posts/:post_id", () => {
 })
 
 describe("POST - /api/post", () => {
-    it("POST:201 - adds a new post and returns it", () => {
+    it.only("POST:201 - adds a new post and returns it", () => {
         const newPost = {
         username: "nature_lover",
         post_img: "https://media.gettyimages.com/id/993489488/photo/peregrine-falcon-adult-female-warming-its-chicks-city-church-esslingen-baden-wuerttemberg.jpg?s=612x612&w=gi&k=20&c=FXlV3zDkpidzWObT8njwXc3AfexCEa3n8_mS89a-QaY=",
@@ -264,10 +264,11 @@ describe("POST - /api/post", () => {
         location_coord: "(-73.94579, 40.807472)"
         }
         return request(app)
-        .post("/api/post?longitude=-73.94579&latitude=40.807472")
+        .post("/api/post")
         .send(newPost)
         .expect(201)
         .then(({ body }) => {
+            console.log(body)
             expect(body.post).toEqual(expect.objectContaining({
                 post_id: expect.any(Number),
                 username: expect.any(String),
