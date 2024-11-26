@@ -56,7 +56,7 @@ exports.fetchPostsByMap = (longitude, latitude, sort_by = 'created_at', order = 
     return db.query(query, [longitude, latitude, radius])
         .then(({ rows }) => {
             if (rows.length === 0) {
-                return Promise.reject({ status: 404, msg: `No posts found within ${radius}/1000 km` });
+                return Promise.reject({ status: 404, msg: `No posts found within ${radius/1000} km` });
             }
             return rows;
         });
