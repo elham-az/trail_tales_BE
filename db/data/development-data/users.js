@@ -21,7 +21,7 @@ module.exports =[
     username: 'wildlife_watcher',
     name: 'Maryam',
     profile_img: 'https://images.pexels.com/photos/20700696/pexels-photo-20700696/free-photo-of-sun-shining-over-a-lake.jpeg?auto=compress&cs=tinysrgb&w=1200',
-    points: 16
+    points: 18
     }, 
     {
     username: 'Sarah678',
@@ -39,13 +39,13 @@ module.exports =[
     username: 'hiking_annie',
     name: 'Annie',
     profile_img: 'https://images.pexels.com/photos/27054224/pexels-photo-27054224/free-photo-of-motorbike-parked-on-hill-on-sea-coast.jpeg?auto=compress&cs=tinysrgb&w=800&lazy=load',
-    points: 35
+    points: 33
     },
     {
     username: 'river_runner',
     name: 'Jess',
     profile_img: 'https://images.pexels.com/photos/556669/pexels-photo-556669.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-    points: 8
+    points: 9
     },
     {
     username: 'Judie',
@@ -63,19 +63,19 @@ module.exports =[
     username: 'MattO',
     name: 'Matthew Owen',
     profile_img: 'https://images.unsplash.com/photo-1532202802379-df93d543bac3?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    points: 26
+    points: 24
     },
     {
     username: 'Darren_Smith',
     name: 'Darren Smith',
     profile_img: 'https://images.unsplash.com/photo-1524481905007-ea072534b820?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    points: 8
+    points: 9
     },
     {
     username: 'Olly92',
     name: 'Olly Hutchinson',
     profile_img: 'https://images.pexels.com/photos/172289/pexels-photo-172289.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-    points: 3
+    points: 15
     },
     {
     username: 'BethT',
@@ -93,7 +93,7 @@ module.exports =[
     username: 'Mark96',
     name: 'Mark Taylor',
     profile_img: 'https://images.unsplash.com/photo-1718567074329-ae4d92befb66?q=80&w=2835&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    points: 9
+    points: 3
     },
     {
     username: 'KeithC',
